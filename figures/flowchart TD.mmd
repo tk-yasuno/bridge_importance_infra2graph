@@ -1,0 +1,17 @@
+flowchart TD
+    A[Load HeteroData] --> B[Split bridge nodes Train Val Test]
+    B --> C[Bridge Importance HGNN GAT HeteroConv]
+    C --> D[Target transform log1p]
+    D --> E[Weighted Huber Loss w = 1 + alpha * y_norm]
+    E --> F[Backprop and optimizer step]
+    F --> G{Validation improved}
+    G -->|Yes| H[Save best model]
+    G -->|No| I[Increase patience counter]
+    H --> J{Early stopping}
+    I --> J
+    J -->|No| C
+    J -->|Yes| K[Load best checkpoint]
+    K --> L[Predict on test set]
+    L --> M[Inverse transform expm1]
+    M --> N[Evaluate R2 MAE RMSE]
+    N --> O[Generate 7 visualizations]

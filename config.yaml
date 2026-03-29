@@ -1,0 +1,194 @@
+# Bridge Importance Scoring MVP Configuration
+# 山口市1316橋の重要度スコアリング設定
+
+# データパス設定
+data:
+  bridge_list: "data/Bridge_xy_location/YamaguchiPrefBridgeListOpen251122_154891.xlsx"
+  river_data: "data/RiverDataKokudo/W05-08_35_GML"
+  coastline_data: "data/KaigansenDataKokudo/C23-06_35_GML"
+  output_dir: "output/bridge_importance"
+  
+  # データフィルタリング設定
+  filter:
+    # 市町村でフィルタリング（Noneで全件、文字列で特定市町村のみ）
+    city: "山口市"  # 例: "山口市", None（全件）
+    city_column: "所在地"  # 市町村を示す列名
+  
+  # OSM データ取得設定（山口市の範囲）
+  osm:
+    # 山口市の概算範囲（EPSG:4326）
+    bbox:
+      min_lon: 131.3
+      min_lat: 34.1
+      max_lon: 131.6
+      max_lat: 34.3
+    # または市境界ポリゴンファイルを指定
+    # boundary_file: "data/yamaguchi_boundary.geojson"
+    
+  # 境界生成設定
+  boundary:
+    buffer_km: 1.0  # 橋梁範囲からのバッファ距離（km）
+
+# CRS設定
+crs:
+  geographic: "EPSG:4326"  # WGS84
+  projected: "EPSG:3857"   # Web Mercator (距離計算用)
+
+# グラフ構築設定
+graph:
+  # データ取得設定
+  fetch:
+    buildings: true       # 建物データを取得するか
+    bus_stops: true       # バス停データを取得するか
+  
+  # 道路ネットワーク
+  street:
+    network_type: "drive"  # 自動車通行可能な道路
+    simplify: true
+  
+  # 近接関係の閾値（メートル）
+  proximity:
+    bridge_to_street: 30      # 橋梁→道路スナップ距離
+    bridge_to_building: 1000  # 橋梁→建物の影響範囲
+    bridge_to_bus_stop: 800   # 橋梁→バス停の影響範囲
+    bridge_to_public: 1500    # 橋梁→公共施設の影響範囲
+    bridge_to_river: 50       # 橋梁→河川の近接判定
+    bridge_to_coast: 5000     # 橋梁→海岸線（塩害リスク）
+
+# 建物分類タグ
+building_categories:
+  residential:
+    - "house"
+    - "residential"
+    - "apartments"
+  hospital:
+    - "hospital"
+    - "clinic"
+  school:
+    - "school"
+    - "university"
+    - "kindergarten"
+  public:
+    - "townhall"
+    - "library"
+    - "community_centre"
+  emergency:
+    - "fire_station"
+    - "police"
+
+# POI取得タグ
+poi_tags:
+  bus_stop:
+    highway: "bus_stop"
+  hospital:
+    amenity: "hospital"
+  school:
+    amenity: 
+      - "school"
+      - "university"
+      - "kindergarten"
+  public_facility:
+    amenity:
+      - "townhall"
+      - "library"
+      - "community_centre"
+  emergency:
+    amenity:
+      - "fire_station"
+      - "police"
+
+# 媒介中心性計算設定
+centrality:
+  normalized: true
+  endpoints: false
+  # サンプリング設定（大規模グラフの場合）
+  k: 500  # サンプルノード数（Noneで全ノード）
+
+# スコアリング設定
+scoring:
+  # スコア範囲
+  min_score: 0
+  max_score: 100
+  
+  # 重みづけ（将来的な拡張用）
+  weights:
+    betweenness: 0.6      # 媒介中心性
+    public_access: 0.2    # 公共施設アクセス
+    traffic_volume: 0.2   # 交通量（代理変数）
+
+# 説明文生成設定
+narrative:
+  # スコア閾値による分類
+  thresholds:
+    critical: 90    # 最上位クラス
+    high: 70        # 高重要度
+    medium: 50      # 中程度
+
+# HGNN設定（v1.1+）
+hgnn:
+  # v1.4 実験名（output/<experiment_name>/ に保存）
+  experiment_name: "hgnn_training_v1_4_exp4lite_knn3_noedgeattr_quantile_weak"
+
+  # モデルタイプ: 'standard' or 'simple'
+  model_type: "standard"
+  
+  # v1.3 ターゲット変数（閉鎖時の間接被害）
+  target_column: "indirect_damage_score"
+
+  # v1.3 k-NN特徴量設定
+  knn_k: 64
+  knn_max_distance_m: 1000
+
+  # v1.4 Exp-2: bridge-streetエッジ再定義
+  bridge_edge_mode: "knn"   # "graph"(既存) or "knn"
+  bridge_edge_knn_k: 3
+  use_edge_attr: false
+  edge_distance_scale_m: 500.0
+  
+  # 特徴量処理
+  normalize_features: true  # 特徴量を正規化（StandardScaler）
+  remove_zero_variance: true  # 分散ゼロの特徴を除去
+  
+  # モデルハイパーパラメータ
+  hidden_channels: 128  # 64→128に増加
+  num_layers: 3  # 2→3に増加
+  conv_type: "GAT"  # 'GAT' or 'SAGE'
+  dropout: 0.3  # 0.2→0.3に増加（過学習防止）
+  heads: 4  # GAT attention heads
+  
+  # トレーニング設定
+  num_epochs: 300
+  learning_rate: 0.001
+  weight_decay: 0.0005
+  patience: 50  # Early stopping patience
+  use_log1p_target: true  # ターゲットをlog1p変換（歪み補正）
+  loss_function: "huber"  # 損失関数: "mse" or "huber"
+  use_weighted_loss: true   # Exp-4再調整で有効
+  weight_alpha: 3.0         # 重みの強度: weight = 1 + alpha * y_normalized
+  weight_scheme: "quantile"   # linear or quantile
+  quantile_edges: [0.5, 0.8, 0.9]
+  quantile_weights: [1.0, 1.2, 1.6, 2.2]
+  
+  # データ分割
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  random_seed: 42
+
+# 公共施設の閾値
+public_facility_threshold: 3  # この数以上で「集中」と判定
+
+# リスク判定
+risk:
+  salt_damage_distance: 3000  # 海岸線からこの距離以内で塩害リスク
+  flood_risk: true            # 河川近接で洪水リスク
+
+# ログ設定
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+# 処理設定
+processing:
+  parallel: true
+  n_jobs: -1  # -1で全コア使用

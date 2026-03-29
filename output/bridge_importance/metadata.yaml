@@ -1,0 +1,1268 @@
+config:
+  building_categories:
+    emergency:
+    - fire_station
+    - police
+    hospital:
+    - hospital
+    - clinic
+    public:
+    - townhall
+    - library
+    - community_centre
+    residential:
+    - house
+    - residential
+    - apartments
+    school:
+    - school
+    - university
+    - kindergarten
+  centrality:
+    endpoints: false
+    normalized: true
+  crs:
+    geographic: EPSG:4326
+    projected: EPSG:3857
+  data:
+    boundary:
+      buffer_km: 1.0
+    bridge_list: data/Bridge_xy_location/YamaguchiPrefBridgeListOpen251122_154891.xlsx
+    coastline_data: data/KaigansenDataKokudo/C23-06_35_GML
+    filter:
+      city: 山口市
+      city_column: 所在地
+    osm:
+      bbox:
+        max_lat: 34.3
+        max_lon: 131.6
+        min_lat: 34.1
+        min_lon: 131.3
+    output_dir: output/bridge_importance
+    river_data: data/RiverDataKokudo/W05-08_35_GML
+  graph:
+    proximity:
+      bridge_to_building: 1000
+      bridge_to_bus_stop: 800
+      bridge_to_coast: 5000
+      bridge_to_public: 1500
+      bridge_to_river: 50
+      bridge_to_street: 30
+    street:
+      network_type: drive
+      simplify: true
+  logging:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level: INFO
+  narrative:
+    public_facility_threshold: 3
+    risk:
+      flood_risk: true
+      salt_damage_distance: 3000
+    thresholds:
+      critical: 90
+      high: 70
+      low: 30
+      medium: 50
+  poi_tags:
+    bus_stop:
+      highway: bus_stop
+    emergency:
+      amenity:
+      - fire_station
+      - police
+    hospital:
+      amenity: hospital
+    public_facility:
+      amenity:
+      - townhall
+      - library
+      - community_centre
+    school:
+      amenity:
+      - school
+      - university
+      - kindergarten
+  processing:
+    n_jobs: -1
+    parallel: true
+  scoring:
+    max_score: 100
+    min_score: 0
+    weights:
+      betweenness: 0.6
+      public_access: 0.2
+      traffic_volume: 0.2
+graph_metadata:
+  num_bridges: 791
+  num_buildings: 0
+  num_bus_stops: 0
+  num_street_edges: 47712
+  num_street_nodes: 18231
+  snap_info: !!python/object:pandas.core.frame.DataFrame
+    _flags:
+      allows_duplicate_labels: true
+    _metadata: []
+    _mgr: !!python/object/apply:pandas.core.internals.managers.BlockManager
+    - !!python/tuple
+      - !!python/object/apply:pandas._libs.internals._unpickle_block
+        - !!python/object/apply:numpy._core.multiarray._reconstruct
+          args:
+          - &id001 !!python/name:numpy.ndarray ''
+          - !!python/tuple
+            - 0
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple
+            - 1
+            - 791
+          - &id002 !!python/object/apply:numpy.dtype
+            args:
+            - O8
+            - false
+            - true
+            state: !!python/tuple
+            - 3
+            - '|'
+            - null
+            - null
+            - null
+            - -1
+            - -1
+            - 63
+          - false
+          - - BR_0000
+            - BR_0001
+            - BR_0002
+            - BR_0003
+            - BR_0004
+            - BR_0005
+            - BR_0006
+            - BR_0007
+            - BR_0008
+            - BR_0009
+            - BR_0010
+            - BR_0011
+            - BR_0012
+            - BR_0013
+            - BR_0014
+            - BR_0015
+            - BR_0016
+            - BR_0017
+            - BR_0018
+            - BR_0019
+            - BR_0020
+            - BR_0021
+            - BR_0022
+            - BR_0023
+            - BR_0024
+            - BR_0025
+            - BR_0026
+            - BR_0027
+            - BR_0028
+            - BR_0029
+            - BR_0030
+            - BR_0031
+            - BR_0032
+            - BR_0033
+            - BR_0034
+            - BR_0035
+            - BR_0036
+            - BR_0037
+            - BR_0038
+            - BR_0039
+            - BR_0040
+            - BR_0041
+            - BR_0042
+            - BR_0043
+            - BR_0044
+            - BR_0045
+            - BR_0046
+            - BR_0047
+            - BR_0048
+            - BR_0049
+            - BR_0050
+            - BR_0051
+            - BR_0052
+            - BR_0053
+            - BR_0054
+            - BR_0055
+            - BR_0056
+            - BR_0057
+            - BR_0058
+            - BR_0059
+            - BR_0060
+            - BR_0061
+            - BR_0062
+            - BR_0063
+            - BR_0064
+            - BR_0065
+            - BR_0066
+            - BR_0067
+            - BR_0068
+            - BR_0069
+            - BR_0070
+            - BR_0071
+            - BR_0072
+            - BR_0073
+            - BR_0074
+            - BR_0075
+            - BR_0076
+            - BR_0077
+            - BR_0078
+            - BR_0079
+            - BR_0080
+            - BR_0081
+            - BR_0082
+            - BR_0083
+            - BR_0084
+            - BR_0085
+            - BR_0086
+            - BR_0087
+            - BR_0088
+            - BR_0089
+            - BR_0090
+            - BR_0091
+            - BR_0092
+            - BR_0093
+            - BR_0094
+            - BR_0095
+            - BR_0096
+            - BR_0097
+            - BR_0098
+            - BR_0099
+            - BR_0100
+            - BR_0101
+            - BR_0102
+            - BR_0103
+            - BR_0104
+            - BR_0105
+            - BR_0106
+            - BR_0107
+            - BR_0108
+            - BR_0109
+            - BR_0110
+            - BR_0111
+            - BR_0112
+            - BR_0113
+            - BR_0114
+            - BR_0115
+            - BR_0116
+            - BR_0117
+            - BR_0118
+            - BR_0119
+            - BR_0120
+            - BR_0121
+            - BR_0122
+            - BR_0123
+            - BR_0124
+            - BR_0125
+            - BR_0126
+            - BR_0127
+            - BR_0128
+            - BR_0129
+            - BR_0130
+            - BR_0131
+            - BR_0132
+            - BR_0133
+            - BR_0134
+            - BR_0135
+            - BR_0136
+            - BR_0137
+            - BR_0138
+            - BR_0139
+            - BR_0140
+            - BR_0141
+            - BR_0142
+            - BR_0143
+            - BR_0144
+            - BR_0145
+            - BR_0146
+            - BR_0147
+            - BR_0148
+            - BR_0149
+            - BR_0150
+            - BR_0151
+            - BR_0152
+            - BR_0153
+            - BR_0154
+            - BR_0155
+            - BR_0156
+            - BR_0157
+            - BR_0158
+            - BR_0159
+            - BR_0160
+            - BR_0161
+            - BR_0162
+            - BR_0163
+            - BR_0164
+            - BR_0165
+            - BR_0166
+            - BR_0167
+            - BR_0168
+            - BR_0169
+            - BR_0170
+            - BR_0171
+            - BR_0172
+            - BR_0173
+            - BR_0174
+            - BR_0175
+            - BR_0176
+            - BR_0177
+            - BR_0178
+            - BR_0179
+            - BR_0180
+            - BR_0181
+            - BR_0182
+            - BR_0183
+            - BR_0184
+            - BR_0185
+            - BR_0186
+            - BR_0187
+            - BR_0188
+            - BR_0189
+            - BR_0190
+            - BR_0191
+            - BR_0192
+            - BR_0193
+            - BR_0194
+            - BR_0195
+            - BR_0196
+            - BR_0197
+            - BR_0198
+            - BR_0199
+            - BR_0200
+            - BR_0201
+            - BR_0202
+            - BR_0203
+            - BR_0204
+            - BR_0205
+            - BR_0206
+            - BR_0207
+            - BR_0208
+            - BR_0209
+            - BR_0210
+            - BR_0211
+            - BR_0212
+            - BR_0213
+            - BR_0214
+            - BR_0215
+            - BR_0216
+            - BR_0217
+            - BR_0218
+            - BR_0219
+            - BR_0220
+            - BR_0221
+            - BR_0222
+            - BR_0223
+            - BR_0224
+            - BR_0225
+            - BR_0226
+            - BR_0227
+            - BR_0228
+            - BR_0229
+            - BR_0230
+            - BR_0231
+            - BR_0232
+            - BR_0233
+            - BR_0234
+            - BR_0235
+            - BR_0236
+            - BR_0237
+            - BR_0238
+            - BR_0239
+            - BR_0240
+            - BR_0241
+            - BR_0242
+            - BR_0243
+            - BR_0244
+            - BR_0245
+            - BR_0246
+            - BR_0247
+            - BR_0248
+            - BR_0249
+            - BR_0250
+            - BR_0251
+            - BR_0252
+            - BR_0253
+            - BR_0254
+            - BR_0255
+            - BR_0256
+            - BR_0257
+            - BR_0258
+            - BR_0259
+            - BR_0260
+            - BR_0261
+            - BR_0262
+            - BR_0263
+            - BR_0264
+            - BR_0265
+            - BR_0266
+            - BR_0267
+            - BR_0268
+            - BR_0269
+            - BR_0270
+            - BR_0271
+            - BR_0272
+            - BR_0273
+            - BR_0274
+            - BR_0275
+            - BR_0276
+            - BR_0277
+            - BR_0278
+            - BR_0279
+            - BR_0280
+            - BR_0281
+            - BR_0282
+            - BR_0283
+            - BR_0284
+            - BR_0285
+            - BR_0286
+            - BR_0287
+            - BR_0288
+            - BR_0289
+            - BR_0290
+            - BR_0291
+            - BR_0292
+            - BR_0293
+            - BR_0294
+            - BR_0295
+            - BR_0296
+            - BR_0297
+            - BR_0298
+            - BR_0299
+            - BR_0300
+            - BR_0301
+            - BR_0302
+            - BR_0303
+            - BR_0304
+            - BR_0305
+            - BR_0306
+            - BR_0307
+            - BR_0308
+            - BR_0309
+            - BR_0310
+            - BR_0311
+            - BR_0312
+            - BR_0313
+            - BR_0314
+            - BR_0315
+            - BR_0316
+            - BR_0317
+            - BR_0318
+            - BR_0319
+            - BR_0320
+            - BR_0321
+            - BR_0322
+            - BR_0323
+            - BR_0324
+            - BR_0325
+            - BR_0326
+            - BR_0327
+            - BR_0328
+            - BR_0329
+            - BR_0330
+            - BR_0331
+            - BR_0332
+            - BR_0333
+            - BR_0334
+            - BR_0335
+            - BR_0336
+            - BR_0337
+            - BR_0338
+            - BR_0339
+            - BR_0340
+            - BR_0341
+            - BR_0342
+            - BR_0343
+            - BR_0344
+            - BR_0345
+            - BR_0346
+            - BR_0347
+            - BR_0348
+            - BR_0349
+            - BR_0350
+            - BR_0351
+            - BR_0352
+            - BR_0353
+            - BR_0354
+            - BR_0355
+            - BR_0356
+            - BR_0357
+            - BR_0358
+            - BR_0359
+            - BR_0360
+            - BR_0361
+            - BR_0362
+            - BR_0363
+            - BR_0364
+            - BR_0365
+            - BR_0366
+            - BR_0367
+            - BR_0368
+            - BR_0369
+            - BR_0370
+            - BR_0371
+            - BR_0372
+            - BR_0373
+            - BR_0374
+            - BR_0375
+            - BR_0376
+            - BR_0377
+            - BR_0378
+            - BR_0379
+            - BR_0380
+            - BR_0381
+            - BR_0382
+            - BR_0383
+            - BR_0384
+            - BR_0385
+            - BR_0386
+            - BR_0387
+            - BR_0388
+            - BR_0389
+            - BR_0390
+            - BR_0391
+            - BR_0392
+            - BR_0393
+            - BR_0394
+            - BR_0395
+            - BR_0396
+            - BR_0397
+            - BR_0398
+            - BR_0399
+            - BR_0400
+            - BR_0401
+            - BR_0402
+            - BR_0403
+            - BR_0404
+            - BR_0405
+            - BR_0406
+            - BR_0407
+            - BR_0408
+            - BR_0409
+            - BR_0410
+            - BR_0411
+            - BR_0412
+            - BR_0413
+            - BR_0414
+            - BR_0415
+            - BR_0416
+            - BR_0417
+            - BR_0418
+            - BR_0419
+            - BR_0420
+            - BR_0421
+            - BR_0422
+            - BR_0423
+            - BR_0424
+            - BR_0425
+            - BR_0426
+            - BR_0427
+            - BR_0428
+            - BR_0429
+            - BR_0430
+            - BR_0431
+            - BR_0432
+            - BR_0433
+            - BR_0434
+            - BR_0435
+            - BR_0436
+            - BR_0437
+            - BR_0438
+            - BR_0439
+            - BR_0440
+            - BR_0441
+            - BR_0442
+            - BR_0443
+            - BR_0444
+            - BR_0445
+            - BR_0446
+            - BR_0447
+            - BR_0448
+            - BR_0449
+            - BR_0450
+            - BR_0451
+            - BR_0452
+            - BR_0453
+            - BR_0454
+            - BR_0455
+            - BR_0456
+            - BR_0457
+            - BR_0458
+            - BR_0459
+            - BR_0460
+            - BR_0461
+            - BR_0462
+            - BR_0463
+            - BR_0464
+            - BR_0465
+            - BR_0466
+            - BR_0467
+            - BR_0468
+            - BR_0469
+            - BR_0470
+            - BR_0471
+            - BR_0472
+            - BR_0473
+            - BR_0474
+            - BR_0475
+            - BR_0476
+            - BR_0477
+            - BR_0478
+            - BR_0479
+            - BR_0480
+            - BR_0481
+            - BR_0482
+            - BR_0483
+            - BR_0484
+            - BR_0485
+            - BR_0486
+            - BR_0487
+            - BR_0488
+            - BR_0489
+            - BR_0490
+            - BR_0491
+            - BR_0492
+            - BR_0493
+            - BR_0494
+            - BR_0495
+            - BR_0496
+            - BR_0497
+            - BR_0498
+            - BR_0499
+            - BR_0500
+            - BR_0501
+            - BR_0502
+            - BR_0503
+            - BR_0504
+            - BR_0505
+            - BR_0506
+            - BR_0507
+            - BR_0508
+            - BR_0509
+            - BR_0510
+            - BR_0511
+            - BR_0512
+            - BR_0513
+            - BR_0514
+            - BR_0515
+            - BR_0516
+            - BR_0517
+            - BR_0518
+            - BR_0519
+            - BR_0520
+            - BR_0521
+            - BR_0522
+            - BR_0523
+            - BR_0524
+            - BR_0525
+            - BR_0526
+            - BR_0527
+            - BR_0528
+            - BR_0529
+            - BR_0530
+            - BR_0531
+            - BR_0532
+            - BR_0533
+            - BR_0534
+            - BR_0535
+            - BR_0536
+            - BR_0537
+            - BR_0538
+            - BR_0539
+            - BR_0540
+            - BR_0541
+            - BR_0542
+            - BR_0543
+            - BR_0544
+            - BR_0545
+            - BR_0546
+            - BR_0547
+            - BR_0548
+            - BR_0549
+            - BR_0550
+            - BR_0551
+            - BR_0552
+            - BR_0553
+            - BR_0554
+            - BR_0555
+            - BR_0556
+            - BR_0557
+            - BR_0558
+            - BR_0559
+            - BR_0560
+            - BR_0561
+            - BR_0562
+            - BR_0563
+            - BR_0564
+            - BR_0565
+            - BR_0566
+            - BR_0567
+            - BR_0568
+            - BR_0569
+            - BR_0570
+            - BR_0571
+            - BR_0572
+            - BR_0573
+            - BR_0574
+            - BR_0575
+            - BR_0576
+            - BR_0577
+            - BR_0578
+            - BR_0579
+            - BR_0580
+            - BR_0581
+            - BR_0582
+            - BR_0583
+            - BR_0584
+            - BR_0585
+            - BR_0586
+            - BR_0587
+            - BR_0588
+            - BR_0589
+            - BR_0590
+            - BR_0591
+            - BR_0592
+            - BR_0593
+            - BR_0594
+            - BR_0595
+            - BR_0596
+            - BR_0597
+            - BR_0598
+            - BR_0599
+            - BR_0600
+            - BR_0601
+            - BR_0602
+            - BR_0603
+            - BR_0604
+            - BR_0605
+            - BR_0606
+            - BR_0607
+            - BR_0608
+            - BR_0609
+            - BR_0610
+            - BR_0611
+            - BR_0612
+            - BR_0613
+            - BR_0614
+            - BR_0615
+            - BR_0616
+            - BR_0617
+            - BR_0618
+            - BR_0619
+            - BR_0620
+            - BR_0621
+            - BR_0622
+            - BR_0623
+            - BR_0624
+            - BR_0625
+            - BR_0626
+            - BR_0627
+            - BR_0628
+            - BR_0629
+            - BR_0630
+            - BR_0631
+            - BR_0632
+            - BR_0633
+            - BR_0634
+            - BR_0635
+            - BR_0636
+            - BR_0637
+            - BR_0638
+            - BR_0639
+            - BR_0640
+            - BR_0641
+            - BR_0642
+            - BR_0643
+            - BR_0644
+            - BR_0645
+            - BR_0646
+            - BR_0647
+            - BR_0648
+            - BR_0649
+            - BR_0650
+            - BR_0651
+            - BR_0652
+            - BR_0653
+            - BR_0654
+            - BR_0655
+            - BR_0656
+            - BR_0657
+            - BR_0658
+            - BR_0659
+            - BR_0660
+            - BR_0661
+            - BR_0662
+            - BR_0663
+            - BR_0664
+            - BR_0665
+            - BR_0666
+            - BR_0667
+            - BR_0668
+            - BR_0669
+            - BR_0670
+            - BR_0671
+            - BR_0672
+            - BR_0673
+            - BR_0674
+            - BR_0675
+            - BR_0676
+            - BR_0677
+            - BR_0678
+            - BR_0679
+            - BR_0680
+            - BR_0681
+            - BR_0682
+            - BR_0683
+            - BR_0684
+            - BR_0685
+            - BR_0686
+            - BR_0687
+            - BR_0688
+            - BR_0689
+            - BR_0690
+            - BR_0691
+            - BR_0692
+            - BR_0693
+            - BR_0694
+            - BR_0695
+            - BR_0696
+            - BR_0697
+            - BR_0698
+            - BR_0699
+            - BR_0700
+            - BR_0701
+            - BR_0702
+            - BR_0703
+            - BR_0704
+            - BR_0705
+            - BR_0706
+            - BR_0707
+            - BR_0708
+            - BR_0709
+            - BR_0710
+            - BR_0711
+            - BR_0712
+            - BR_0713
+            - BR_0714
+            - BR_0715
+            - BR_0716
+            - BR_0717
+            - BR_0718
+            - BR_0719
+            - BR_0720
+            - BR_0721
+            - BR_0722
+            - BR_0723
+            - BR_0724
+            - BR_0725
+            - BR_0726
+            - BR_0727
+            - BR_0728
+            - BR_0729
+            - BR_0730
+            - BR_0731
+            - BR_0732
+            - BR_0733
+            - BR_0734
+            - BR_0735
+            - BR_0736
+            - BR_0737
+            - BR_0738
+            - BR_0739
+            - BR_0740
+            - BR_0741
+            - BR_0742
+            - BR_0743
+            - BR_0744
+            - BR_0745
+            - BR_0746
+            - BR_0747
+            - BR_0748
+            - BR_0749
+            - BR_0750
+            - BR_0751
+            - BR_0752
+            - BR_0753
+            - BR_0754
+            - BR_0755
+            - BR_0756
+            - BR_0757
+            - BR_0758
+            - BR_0759
+            - BR_0760
+            - BR_0761
+            - BR_0762
+            - BR_0763
+            - BR_0764
+            - BR_0765
+            - BR_0766
+            - BR_0767
+            - BR_0768
+            - BR_0769
+            - BR_0770
+            - BR_0771
+            - BR_0772
+            - BR_0773
+            - BR_0774
+            - BR_0775
+            - BR_0776
+            - BR_0777
+            - BR_0778
+            - BR_0779
+            - BR_0780
+            - BR_0781
+            - BR_0782
+            - BR_0783
+            - BR_0784
+            - BR_0785
+            - BR_0786
+            - BR_0787
+            - BR_0788
+            - BR_0789
+            - BR_0790
+        - !!python/object/apply:builtins.slice
+          - 0
+          - 1
+          - 1
+        - 2
+      - !!python/object/apply:pandas._libs.internals._unpickle_block
+        - !!python/object/apply:numpy._core.multiarray._reconstruct
+          args:
+          - *id001
+          - !!python/tuple
+            - 0
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple
+            - 2
+            - 791
+          - !!python/object/apply:numpy.dtype
+            args:
+            - f8
+            - false
+            - true
+            state: !!python/tuple
+            - 3
+            - <
+            - null
+            - null
+            - null
+            - -1
+            - -1
+            - 0
+          - false
+          - !!binary |
+            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
+            xT8=
+        - !!python/object/apply:builtins.slice
+          - 1
+          - 3
+          - 1
+        - 2
+      - !!python/object/apply:pandas._libs.internals._unpickle_block
+        - !!python/object/apply:numpy._core.multiarray._reconstruct
+          args:
+          - *id001
+          - !!python/tuple
+            - 0
+          - !!binary |
+            Yg==
+          state: !!python/tuple
+          - 1
+          - !!python/tuple
+            - 1
+            - 791
+          - !!python/object/apply:numpy.dtype
+            args:
+            - b1
+            - false
+            - true
+            state: !!python/tuple
+            - 3
+            - '|'
+            - null
+            - null
+            - null
+            - -1
+            - -1
+            - 0
+          - false
+          - !!binary |
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQABAQABAAEBAQEAAQEBAAEBAQAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQABAQEBAQEBAQEBAQEBAQEBAQEBAQABAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEAAAAAAAAAAAEAAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+            AQEBAQEBAQEAAQEBAQEBAAAAAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE=
+        - !!python/object/apply:builtins.slice
+          - 3
+          - 4
+          - 1
+        - 2
+    - - !!python/object/apply:pandas.core.indexes.base._new_Index
+        - !!python/name:pandas.core.indexes.base.Index ''
+        - data: !!python/object/apply:numpy._core.multiarray._reconstruct
+            args:
+            - *id001
+            - !!python/tuple
+              - 0
+            - !!binary |
+              Yg==
+            state: !!python/tuple
+            - 1
+            - !!python/tuple
+              - 4
+            - *id002
+            - false
+            - - bridge_id
+              - nearest_edge
+              - distance
+              - snapped
+          name: null
+      - !!python/object/apply:pandas.core.indexes.base._new_Index
+        - !!python/name:pandas.core.indexes.range.RangeIndex ''
+        - name: null
+          start: 0
+          step: 1
+          stop: 791
+    _typ: dataframe
+    attrs: {}
+  total_edges: 25666
+  total_nodes: 18998
+num_bridges_analyzed: 791
+timestamp: '2026-03-28T22:17:56.969588'

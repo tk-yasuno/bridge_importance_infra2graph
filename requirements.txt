@@ -1,0 +1,41 @@
+# Bridge Importance Scoring MVP - Requirements
+# Python 3.8+
+
+# Core dependencies
+numpy>=1.21.0
+pandas>=1.3.0
+geopandas>=0.10.0
+shapely>=1.8.0
+networkx>=2.6.0
+
+# Geospatial data handling
+pyproj>=3.2.0
+fiona>=1.8.20
+rtree>=0.9.7
+
+# OSM data fetching
+osmnx>=1.1.0
+
+# Data I/O
+openpyxl>=3.0.9  # Excel読み込み
+pyyaml>=5.4.0    # 設定ファイル
+
+# Visualization (optional)
+matplotlib>=3.4.0
+seaborn>=0.11.0
+folium>=0.12.0
+
+# Progress bars
+tqdm>=4.62.0
+
+# PyTorch and PyTorch Geometric (v1.1+)
+torch>=2.0.0
+torch-geometric>=2.3.0
+torch-scatter>=2.1.0
+torch-sparse>=0.6.17
+
+# Scikit-learn for ML utilities
+scikit-learn>=1.0.0
+
+# City2Graph (if available via pip, otherwise manual install)
+# city2graph>=0.1.0

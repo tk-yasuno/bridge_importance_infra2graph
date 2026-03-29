@@ -1,0 +1,36 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+.venv-1/
+venv/
+
+# Editor/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Local cache
+cache/
+
+# Large/local data assets
+/data/
+/code_exam_clustering/data/
+
+# Large generated binaries
+output/**/*.pt
+output/**/*.pth
+output/**/*.pkl
+output/**/*.pickle
+output/**/*.onnx
+output/**/*.npz
+
+# Keep visualization/report artifacts in output for GitHub docs
+# (png/html/md/csv are intentionally not ignored)
