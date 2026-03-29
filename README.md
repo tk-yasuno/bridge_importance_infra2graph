@@ -720,7 +720,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions, issues, or collaboration inquiries:
 
 - GitHub Issues: [Project Issues](https://github.com/yourusername/bridge_importance_score/issues)
-- Email: your.email@example.com
 
 ---
 
