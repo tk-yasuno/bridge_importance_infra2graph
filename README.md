@@ -1,4 +1,4 @@
-# Bridge Importance Scoring MVP
+# Bridge Importance Scoring MVP : Infra2Graph prototyping
 
 A v1.4-complete Infra2Graph prototype for bridge impact assessment in Yamaguchi City. The system integrates heterogeneous graph analysis and HGNN-based closure-impact prediction, with Exp-4-lite (`kNN=3`, no edge attributes, weak quantile-based weighting) adopted as the reference MVP configuration.
 
