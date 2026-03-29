@@ -1,4 +1,4 @@
-# Bridge Importance Scoring MVP
+# Bridge Importance Scoring MVP : Infra2Graph prototyping
 
 山口市791橋を対象とした橋梁重要度スコアリングシステム
 
