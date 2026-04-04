@@ -16,6 +16,7 @@ Thumbs.db
 
 # Logs
 *.log
+0_LogBAK/
 
 # Local cache
 cache/
