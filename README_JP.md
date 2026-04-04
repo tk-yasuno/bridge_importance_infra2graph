@@ -1,6 +1,6 @@
-# Bridge Importance Scoring MVP
+# Bridge Importance Scoring MVP : Infra2Graph prototyping
 
-山口市791橋を対象とした橋梁重要度スコアリングシステム
+自治体791橋を対象とした橋梁重要度スコアリングシステム
 
 [![バージョン](https://img.shields.io/badge/version-1.4.0-green.svg)](VERSION)
 [![ライセンス](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -171,7 +171,7 @@ pip install -r requirements.txt
 `config.yaml`で以下を調整：
 
 - データパス
-- OSM取得範囲（山口市の境界）
+- OSM取得範囲（自治体の境界）
 - 近接関係の閾値（bridge_to_building: 1000mなど）
 - スコアリングの重みづけ
 
@@ -189,20 +189,20 @@ python main.py
 
 ### 大規模エリア（> 500 km²）: グリッド分割モード ⚡
 
-**山口市（~1,000 km²）などの大規模エリアでは、OSMnx APIのレート制限により単一リクエストが失敗します。**
+**自治体（~1,000 km²）などの大規模エリアでは、OSMnx APIのレート制限により単一リクエストが失敗します。**
 
 この問題を解決するため、**4×4グリッド分割取得システム**を使用してください：
 
 #### ステップ1: グリッド分割でOSMデータを取得
 
 ```bash
-# 山口市を4×4グリッドに分割し、セル単位でOSMデータを取得
+# 自治体を4×4グリッドに分割し、セル単位でOSMデータを取得
 python fetch_osm_grid.py
 ```
 
 **処理内容:**
 
-1. 山口市の境界ポリゴンを取得（Nominatim API）
+1. 自治体の境界ポリゴンを取得（Nominatim API）
 2. 4×4（16セル）のグリッドに分割
 3. 各セルごとに以下を取得（5秒待機でレート制限回避）：
    - 道路ネットワーク（nodes + edges）
@@ -653,10 +653,6 @@ centrality:
 ## ライセンス
 
 本プロジェクトは研究・教育目的で作成されています。データの再利用は各データソースのライセンスに従ってください。
-
-## 開発者
-
-Bridge Importance Scoring MVP Project Team
 
 ---
 
