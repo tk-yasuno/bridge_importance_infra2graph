@@ -499,7 +499,9 @@ def main():
         conv_type=model_config.get('conv_type', 'GAT'),
         dropout=model_config.get('dropout', 0.2),
         heads=model_config.get('heads', 4),
-        use_edge_attr=model_config.get('use_edge_attr', False)
+        use_edge_attr=model_config.get('use_edge_attr', False),
+        sage_aggr=model_config.get('sage_aggr', 'mean'),
+        attention_type=model_config.get('attention_type', 'none')
     )
     
     logger.info(f"Model created: {model.__class__.__name__}")

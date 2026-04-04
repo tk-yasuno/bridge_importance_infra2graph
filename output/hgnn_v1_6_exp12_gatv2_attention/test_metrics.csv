@@ -1,0 +1,2 @@
+mse,mae,rmse,r2,top20_recall,pred_range,true_range,best_epoch,best_time_sec,total_epochs,total_time_sec,peak_gpu_memory_mb
+9.291553497314453,1.3748230934143066,3.0482049631405124,0.8337753415107727,0.9,"(np.float32(0.009522865), np.float32(32.15328))","(np.float32(0.0), np.float32(47.68625))",99,23.865326099999947,149,33.43085069998051,3204.6806640625

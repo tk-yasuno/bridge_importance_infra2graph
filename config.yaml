@@ -32,7 +32,7 @@ data:
 # CRS設定
 crs:
   geographic: "EPSG:4326"  # WGS84
-  projected: "EPSG:3857"   # Web Mercator (距離計算用)
+  projected: "EPSG:6671"   # JGD2011 / 平面直角座標系 第3系 (距離計算用)
 
 # グラフ構築設定
 graph:
@@ -40,6 +40,10 @@ graph:
   fetch:
     buildings: true       # 建物データを取得するか
     bus_stops: true       # バス停データを取得するか
+    residences: true      # v1.5: 住居データを取得するか
+    medical: true         # v1.5: 医療施設データを取得するか
+    shops: true           # v1.5.6: 商店データを取得するか（経済指標用）
+    parks: true           # v1.5.7: 公園データを取得するか（環境指標用）
   
   # 道路ネットワーク
   street:
@@ -52,8 +56,12 @@ graph:
     bridge_to_building: 1000  # 橋梁→建物の影響範囲
     bridge_to_bus_stop: 800   # 橋梁→バス停の影響範囲
     bridge_to_public: 1500    # 橋梁→公共施設の影響範囲
+    bridge_to_residence: 1000 # 橋梁→住居の影響範囲（v1.5新規）
+    bridge_to_medical: 1500   # 橋梁→医療施設の影響範囲（v1.5新規）
     bridge_to_river: 50       # 橋梁→河川の近接判定
     bridge_to_coast: 5000     # 橋梁→海岸線（塩害リスク）
+    bridge_to_shop: 1000      # 橋梁→商店 v1.5.6 新規
+    bridge_to_park: 1500      # 橋梁→公園 v1.5.7 新規
 
 # 建物分類タグ
 building_categories:
@@ -80,6 +88,25 @@ building_categories:
 poi_tags:
   bus_stop:
     highway: "bus_stop"
+  residence:  # v1.5新規: 住居建物
+    building:
+      - "residential"
+      - "house"
+      - "apartments"
+  medical:  # v1.5新規: 医療施設
+    amenity:
+      - "hospital"
+      - "clinic"
+      - "doctors"
+  shop:  # v1.5.6新規: 商店（経済指標用）  ← 追加
+    shop: True  # 全商店タイプを取得        ← 追加
+  park:  # v1.5.7新規: 公園・緑地（環境指標用）  ← 追加
+    leisure:                                 # ← 追加
+      - "park"                               # ← 追加
+      - "garden"                             # ← 追加
+      - "nature_reserve"                     # ← 追加
+      - "playground"                         # 追加
+
   hospital:
     amenity: "hospital"
   school:
@@ -103,6 +130,12 @@ centrality:
   endpoints: false
   # サンプリング設定（大規模グラフの場合）
   k: 500  # サンプルノード数（Noneで全ノード）
+  
+  # 並列計算設定（パフォーマンス最適化）
+  # ⚠️ 注意: 小～中規模グラフではオーバーヘッドが大きく、並列版の方が遅い可能性あり
+  # 実グラフ（117,582ノード）での効果は要検証（benchmark_real_graph_centrality.py で測定）
+  use_parallel: false  # true: 並列版を使用, false: 標準版（NetworkX）を使用
+  n_jobs: -1  # 並列ワーカー数（-1で全CPU使用）
 
 # スコアリング設定
 scoring:
@@ -124,15 +157,71 @@ narrative:
     high: 70        # 高重要度
     medium: 50      # 中程度
 
+# v1.5 社会的影響指標設定
+social_impact:
+  # 社会的影響スコアリングの有効化（true/false）
+  enable: true  # v1.5機能を有効化（住居・医療データ取得済み）
+  
+  # 並列処理設定
+  n_jobs: -1  # 並列ワーカー数（-1で全CPU使用）
+  
+  # サンプリング設定（パフォーマンス最適化）
+  residence_sample_size: 300  # 交通砂漠計算時の住居サンプル数（全3,276件から300件に削減→11倍高速化）
+  
+  # 🚀 空間限定パラメータ（v1.5.1: 99.5%計算量削減）
+  bridge_impact_radius_km: 5.0  # 橋梁影響範囲の半径（km）各橋から半径内の住居のみ計算
+  k_nearest_bus_stops: 5  # 各住居から確認する最近傍バス停数（k-NN）
+  
+  # 🚀 v1.5.2: 医療アクセス空間最適化パラメータ（93%計算量削減）
+  k_nearest_hospitals: 3  # 各住居から確認する最近傍病院数（空間距離で事前選定）
+  
+  # 🚀 v1.5.3: 孤立リスク空間最適化パラメータ（99.3%計算削減）
+  # 🚀 v1.5.5: 影響範囲を3kmに縮小（サブグラフサイズ60%削減、4-6倍高速化）
+  isolation_check_radius_km: 3.0  # 孤立リスク評価の影響範囲（橋梁から半径3km）
+  
+  # 🆕 v1.5.6: 経済指標（物流サプライチェーン）パラメータ
+  supply_chain_radius_km: 3.0  # 国道→商店のサプライチェーン影響範囲（km）
+  k_nearest_highways: 3        # 各商店から確認する最近傍国道ノード数
+  
+  # 🆕 v1.5.7: 環境指標（緑地アクセス）パラメータ
+  green_space_radius_km: 3.0   # 住居→公園のアクセス影響範囲（km）
+  k_nearest_parks: 3           # 各住居から確認する最近傍公園数
+  
+  # 徒歩移動設定
+  walking_speed_kmh: 3.0  # 高齢者を考慮した徒歩速度（km/h）
+  transit_desert_threshold_km: 1.0  # 交通砂漠判定閾値（徒歩20分相当）
+  
+  # 郊外・山間部の定義
+  rural_population_density: 200  # 人口密度閾値（人/km²）
+  rural_elevation_threshold: 100  # 標高閾値（m）
+  
+  # 人口推定設定
+  household_size: 2.5  # 平均世帯人数（人/世帯）
+  
+  # 医療アクセス設定
+  hospital_metapath_num_targets: 3  # 各住居から最寄りN病院を対象
+  
+  # スコア重み（5指標の合算）v1.5.6/v1.5.7で拡張
+  weights:
+    transit_desert: 0.20       # 生活指標（交通砂漠）
+    hospital_access: 0.20      # 医療指標（病院アクセス）
+    isolation_risk: 0.20       # 防災指標（孤立集落リスク）
+    supply_chain_impact: 0.20  # 経済指標（物流サプライチェーン）v1.5.6
+    green_space_access: 0.20   # 環境指標（緑地アクセス）v1.5.7
+  
+  # 標高データ設定
+  elevation_dir: "data/Topographical_Altitude_YamaguchiCity"
+  elevation_max_distance_m: 50.0  # 標高付与時の最大検索距離（m）
+
 # HGNN設定（v1.1+）
 hgnn:
-  # v1.4 実験名（output/<experiment_name>/ に保存）
-  experiment_name: "hgnn_training_v1_4_exp4lite_knn3_noedgeattr_quantile_weak"
+  # v1.6 実験名（output/<experiment_name>/ に保存）
+  experiment_name: "hgnn_v1_6_exp13_metapath_attention"
 
   # モデルタイプ: 'standard' or 'simple'
   model_type: "standard"
   
-  # v1.3 ターゲット変数（閉鎖時の間接被害）
+  # v1.6 ターゲット変数（間接被害スコア）
   target_column: "indirect_damage_score"
 
   # v1.3 k-NN特徴量設定
@@ -145,23 +234,30 @@ hgnn:
   use_edge_attr: false
   edge_distance_scale_m: 500.0
   
+  # v1.6 メタパス特徴量
+  use_metapath_features: true  # グラフトポロジーに基づくメタパス特徴量を使用
+  
   # 特徴量処理
   normalize_features: true  # 特徴量を正規化（StandardScaler）
   remove_zero_variance: true  # 分散ゼロの特徴を除去
   
   # モデルハイパーパラメータ
-  hidden_channels: 128  # 64→128に増加
-  num_layers: 3  # 2→3に増加
-  conv_type: "GAT"  # 'GAT' or 'SAGE'
-  dropout: 0.3  # 0.2→0.3に増加（過学習防止）
+  hidden_channels: 128  # BEST: 精度とメモリ効率の最適バランス
+  num_layers: 3  # BEST: 3層が最適（4層は過学習、5層は回復だがコスト高）
+  conv_type: "SAGE"  # 'GAT' or 'SAGE' (SAGEが圧倒的優位)
+  sage_aggr: "max"  # BEST★: max aggregationが最重要（R²=0.8939達成）
+  dropout: 0.3  # BEST: 過学習防止と性能のバランス
   heads: 4  # GAT attention heads
+  
+  # v1.6 exp11-13: SAGE + Attention実験
+  attention_type: "metapath"  # 'none', 'simple' (exp11), 'gatv2' (exp12), 'metapath' (exp13)
   
   # トレーニング設定
   num_epochs: 300
   learning_rate: 0.001
   weight_decay: 0.0005
   patience: 50  # Early stopping patience
-  use_log1p_target: true  # ターゲットをlog1p変換（歪み補正）
+  use_log1p_target: false  # v1.6: indirect_damage_scoreは生スケールで学習（0-89範囲）
   loss_function: "huber"  # 損失関数: "mse" or "huber"
   use_weighted_loss: true   # Exp-4再調整で有効
   weight_alpha: 3.0         # 重みの強度: weight = 1 + alpha * y_normalized
