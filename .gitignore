@@ -25,6 +25,9 @@ cache/
 /data/
 /code_exam_clustering/data/
 
+# Papers folder (work in progress)
+papers_bridge_impo_hgnn/
+
 # Large generated binaries
 output/**/*.pt
 output/**/*.pth
@@ -32,6 +35,9 @@ output/**/*.pkl
 output/**/*.pickle
 output/**/*.onnx
 output/**/*.npz
+
+# Large heterogeneous graph file (55MB+)
+heterogeneous_graph.pkl
 
 # Keep visualization/report artifacts in output for GitHub docs
 # (png/html/md/csv are intentionally not ignored)
